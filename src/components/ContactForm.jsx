@@ -1,53 +1,52 @@
-// ContactForm.js
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const ContactForm = ({ onAddContact }) => {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleInputChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
+    }
   };
 
-  handleAddContact = () => {
-    const { name, number } = this.state;
+  const handleAddContact = () => {
     if (name === '' || number === '') {
       alert('Please fill in all fields');
       return;
     }
 
-    this.props.onAddContact({ name, number });
-    this.setState({ name: '', number: '' });
+    onAddContact({ name, number });
+    setName('');
+    setNumber('');
   };
 
-  render() {
-    return (
-      <div>
-        <form>
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={this.state.name}
-            onChange={this.handleInputChange}
-          />
-          <input
-            type="tel"
-            name="number"
-            placeholder="Phone Number"
-            value={this.state.number}
-            onChange={this.handleInputChange}
-          />
-          <button type="button" onClick={this.handleAddContact}>
-            Add Contact
-          </button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <form>
+        <input
+          type="text"
+          name="name"
+          placeholder="Name"
+          value={name}
+          onChange={handleInputChange}
+        />
+        <input
+          type="tel"
+          name="number"
+          placeholder="Phone Number"
+          value={number}
+          onChange={handleInputChange}
+        />
+        <button type="button" onClick={handleAddContact}>
+          Add Contact
+        </button>
+      </form>
+    </div>
+  );
+};
 
 export default ContactForm;
